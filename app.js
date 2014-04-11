@@ -201,7 +201,7 @@ app.get('/v0/resources/:index_name', function(req, res) {
 		if (error) {
 			res.send('Error: ' + JSON.stringify(error, null, '  '));
 		} else {
-			res.send('<pre>Result(s):' + JSON.stringify(response, null, '  ') + '</pre>');
+			res.send(response);
 		}
 	});
 
