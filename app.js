@@ -164,18 +164,22 @@ function index_one_document(index_name, resource, page_text) {
 	console.log('load_one: body starts: ' + page_text.substr(0, 40));
 	console.log('title = ' + resource.title + '\ndescription = ' + resource.description + '\ntags = ' + JSON.stringify(resource.tags));
 
+	// add the content to the resource before we add it to Elasticsearch
+	resource.content = page_text;
+
 	// add one doc to the index
 	client.index({
 	  index: index_name,
 	  type: 'post',
 	  // id: 1, // auto-generate instead
-	  body: {
-	    title: resource.title,
-	    description: resource.description,
-	    content: page_text,
-	    tags: resource.tags
-	    // date: TIMESTAMP
-	  }
+	  body: resource
+	  // body: {
+	  //   title: resource.title,
+	  //   description: resource.description,
+	  //   content: page_text,
+	  //   tags: resource.tags
+	  //   // date: TIMESTAMP
+	  // }
 	}, function (error, resp) {
 		if (!error) {
 			console.log('loaded title "' + resource.title + '"');
