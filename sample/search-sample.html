@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<h2>Sample search</h2>
+	<p>Assumes you have Beckley running at <code>//localhost:8000</code>.</p>
+
+	<div>&nbsp;</div>
+	
+	<div>
+		Update index with contents of ../test/test-resources.yml:
+        <button id="update" type="submit">Update</button>
+	</div>
+
+	<div id="update-results"></div>
+
+	<div>&nbsp;</div>
+
+	<div>
+		Search:
+		<input id="q" name="q" type="text" />
+		<button id="search" type="submit">Search</button>
+	</div>
+
+	<div>&nbsp;</div>
+
+	<div id="search-results"></div>
+
+	<div>&nbsp;</div>
+
+	<a id="toggle-raw" href="">show/hide JSON</a>
+	<div id="search-results-raw" style="display: none;"></div>
+
+	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>
+	$(function() {
+		update_url = "//localhost:8000/v0/index-update/test";
+		search_url = "//localhost:8000/v0/resources/test/?q=";
+
+		$('#update').on('click', function() {
+			req = $.get(update_url);
+			req.done(function(resp, textStatus, jqXHR) {
+				$('#update-results').html(textStatus + ': ' + resp);
+			});
+		});
+
+		$('#search').on('click', function() {
+			req = $.get(search_url + $('#q').val());
+			req.done(function(resp, textStatus, jqXHR) {
+				hits = resp.hits.total;
+
+				if (hits > 0) {
+
+					results = resp.hits.hits;
+					out = '';
+					for (i = 0; i < hits; i++) {
+						result = results[i]._source;
+						score = results[i]._score;
+						out += '<div><em><a href="' + result.url + '">' + result.title + '</a></em></div>'
+						+ '<div><em>' + result.description + '</em></div>'
+						+ '<div>Tags: ' + result.tags.join(', ') + '</div>'
+						+ '<div>Score = ' + (Math.round(score * 1000) / 1000);
+						+ '<hr />';
+					}
+					$('#search-results').html(out);
+				} else {
+					$('#search-results').html('No matches found.');
+				}
+
+				$('#search-results-raw').html('<pre>' + JSON.stringify(resp, null, '  ') + '</pre>');
+			});
+		});
+
+		$('#toggle-raw').on('click', function(e) {
+			e.preventDefault();
+			$('#search-results-raw').toggle();
+		});
+
+	});
+	</script>
+</body>
+</html>
