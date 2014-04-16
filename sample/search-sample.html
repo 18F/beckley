@@ -4,12 +4,18 @@
 </head>
 <body>
 	<h2>Sample search</h2>
-	<p>Assumes you have Beckley running at <code>//localhost:8000</code>.</p>
+	<p>
+		This sample code assumes that 
+		<ol>
+			<li>you have Beckley running at <code>//localhost:8000</code>, and </li>
+			<li>you have an index called "test" configured in your <code>config.js</code> file. <em>(In <code>config-sample.js</code>, the "test" index is configured to point to the github repo's <a href="https://github.com/18F/beckley/blob/master/test/test-resources.yml">test/test-resources.yml</a> file.)</em></li>
+		</ol>
+	</p>
 
 	<div>&nbsp;</div>
 	
 	<div>
-		Update index with contents of ../test/test-resources.yml:
+		Update the "test" index with the contents of its resource file:
         <button id="update" type="submit">Update</button>
 	</div>
 
@@ -62,7 +68,14 @@
 						+ '<div><em>' + result.description + '</em></div>'
 						+ '<div>Tags: ' + result.tags.join(', ') + '</div>'
 						+ '<div>Score = ' + (Math.round(score * 1000) / 1000);
-						+ '<hr />';
+
+						if (results[i].highlight.content.length > 0) {
+							out += '<div><em>Highlights:</em></div>'
+							for (j = 0; j < results[i].highlight.content.length; j++) {
+								out += '<small>' + j + ': ...' + results[i].highlight.content[j] + ' ...</small><br />';
+							}
+						}
+						out += '<hr />';
 					}
 					$('#search-results').html(out);
 				} else {

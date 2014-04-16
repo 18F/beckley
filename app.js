@@ -198,16 +198,22 @@ app.get('/v0/resources/:index_name', function(req, res) {
 
 	console.log('q = ' + q);
 
-	client.search({
-		index: index_name,
-		q: q
-	}, function(error, response) {
-		if (error) {
-			res.send('Error: ' + JSON.stringify(error, null, '  '));
-		} else {
-			res.send(response);
+	client.search(
+		{
+			index: index_name,
+			body: {
+				query : { match : { _all : q } },
+				highlight : { fields : { content : {} } }
+			}
+		}, 
+		function(error, response) {
+			if (error) {
+				res.send('Error: ' + JSON.stringify(error, null, '  '));
+			} else {
+				res.send(response);
+			}
 		}
-	});
+	);
 
 });
 
