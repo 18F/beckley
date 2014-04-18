@@ -286,9 +286,11 @@ function index_one_document(index_name, resource, page_type, page_text, ior_call
 app.get('/v0/resources/:index_name', function(req, res) {
 
 	index_name = req.params.index_name;
-	q = req.query.q;
+	q = req.query.q || '';
+	size = req.query.size || 10;
+	from = req.query.from || 0;
 
-	console.log('q = ' + q);
+	console.log('q = ' + q + ', from = ' + from + ', size = ' + size);
 
 	var originalURL = req.originalUrl;
 
@@ -296,6 +298,8 @@ app.get('/v0/resources/:index_name', function(req, res) {
 		{
 			index: index_name,
 			body: {
+				from: from, 
+				size: size,
 				query : { 
 					match : { _all : q } 
 				},
