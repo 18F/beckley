@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+		"preinstall": "npm list jsontool -g || npm install -g jsontool"
   },
   "dependencies": {
     "express": "3.3.4",
@@ -12,7 +13,8 @@
 		"request": "*",
 		"http-auth": "*",
     "js-yaml": "*",
-    "cheerio": "*",
-    "string": "*"
+    "string": "*",
+    "sugar": "*",
+    "date-format-lite": "*"
   }
 }

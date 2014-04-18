@@ -1,3 +1,6 @@
+# test-resources.yml
+
+# typical HTML pages
 - url: http://www2.ed.gov/policy/highered/reg/hearulemaking/2012/vawa.html
   title: "Violence Against Woman Act Negotiated Rulemaking"
   description: "Negotiated rulemaking sessions"
@@ -13,3 +16,17 @@
   - "SUNY"
   - "press release"
 
+# PDF document
+- url: http://www.bia.gov/cs/groups/xraca/documents/text/idc-022708.pdf
+  title: "Bureau of Indian Education Addressing and Responding to Sexual Violence and Abuse at BIE Post-Secondary Institutions"
+  description: "The policy provides guidance to Bureau operated post secondary institutions to assist with responding in a timely manner to sexual violence and abuse, which includes sexual assault, stalking dating and domestic violence."
+  tags: 
+  - "sexual violence"
+  - "Bureau of Indian Education"
+
+# page that sometimes fails to load
+- url: https://prep.rti.org/ARAtoolkit/index.html
+  title: "The Adolescent Relationship Toolkit"
+  description: "The Adolescent Relationship Toolkit provides FYSB's Adolescent Pregnancy Prevention (APP) grantees with guidance on how to incorporate adolescent relationship abuse (ARA) prevention into their existing APP programming. This toolkit provides practical tools for grantees to choose from and adapt to best fit their projects and participants .  There are also links to available resources."
+
+# [end of file]
