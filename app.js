@@ -10,12 +10,14 @@ var express = require('express')
 	, http = require('http')
 	, https = require('https')
 	, http_auth = require('http-auth')
+	, url = require('url')
 	, request = require('request')
 	, fs = require('fs')
 	, elasticsearch = require('elasticsearch')
 	, yaml = require('js-yaml')
 	, S = require('string')
 	, sugar = require('sugar')
+	, cheerio = require('cheerio')
 	, date_format_lite = require('date-format-lite')
 	;
 
@@ -220,6 +222,15 @@ function index_one_resource(resource, ior_callback) {
 				}
 
 				if (content_type == 'text/html') {
+
+					// hackey special-case handling
+					if (S(resource.url).contains('studentaid.ed.gov/about/data-center/school/clery-act')) {
+						// limit indexing to just the section
+						url_hash = url.parse(resource.url, true).hash; // e.g., #some_university
+						$ = cheerio.load(body);
+						body = $(url_hash).html();
+					}
+
 					// get just text from <body>, no formatting, no <head> content, etc.;
 					page_body = body.removeTags('head', 'script', 'noscript').replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').stripTags();
 					page_text = S(page_body).trim().collapseWhitespace().s;

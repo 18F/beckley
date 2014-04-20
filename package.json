@@ -11,10 +11,12 @@
     "elasticsearch": "*",
     "async": "*",
 		"request": "*",
+		"url": "*",
 		"http-auth": "*",
     "js-yaml": "*",
     "string": "*",
     "sugar": "*",
+    "cheerio": "*",
     "date-format-lite": "*"
   }
 }

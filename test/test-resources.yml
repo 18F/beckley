@@ -29,4 +29,26 @@
   title: "The Adolescent Relationship Toolkit"
   description: "The Adolescent Relationship Toolkit provides FYSB's Adolescent Pregnancy Prevention (APP) grantees with guidance on how to incorporate adolescent relationship abuse (ARA) prevention into their existing APP programming. This toolkit provides practical tools for grantees to choose from and adapt to best fit their projects and participants .  There are also links to available resources."
 
+# special case for this URL with hashes -- only index the hash <div>, not the entire page each time
+- url: http://studentaid.ed.gov/about/data-center/school/clery-act#ashford
+  title: "Clery Act Report: Ashford University"
+  description: ""
+
+- url: http://studentaid.ed.gov/about/data-center/school/clery-act#calstate
+  title: "Clery Act Report: California State University"
+  description: ""
+
+- url: http://studentaid.ed.gov/about/data-center/school/clery-act#clemson
+  title: "Clery Act Report: Clemson University"
+  description: ""
+
+- url: http://studentaid.ed.gov/about/data-center/school/clery-act#cnj
+  title: "Clery Act Report: The College of New Jersey"
+  description: ""
+
+- url: http://studentaid.ed.gov/about/data-center/school/clery-act#dsu
+  title: "Clery Act Report: Delaware State University"
+  description: ""
+
+
 # [end of file]
