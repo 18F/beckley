@@ -121,7 +121,21 @@ function rebuild_index(index_name) {
 
 				// either way, create (or recreate) the index
 				client.indices.create({
-					index: index_name
+					index: index_name,
+					body: {
+				     "settings": {
+				         "index": {
+				             "analysis": {
+				                 "analyzer": {
+				                     "default": {
+				                         "type": "snowball",
+				                         "language": "English"
+				                     }
+				                 }
+				             }
+				         }
+				     },						
+					}
 				}, function(err, resp, status) {
 					if (err) {
 						logstr = 'ERROR: could not re-create index';
