@@ -25,12 +25,12 @@ config.app.require_http_basic_auth = false;
 
 // http
 config.app.listen_http = true;
-config.app.port = process.env.BECKLEY_API_PORT || 9200;
+config.app.port = process.env.BECKLEY_API_PORT || 8000;
 
 // https
 config.app.listen_https = false;
 // config.ssl = {
-// 	port: process.env.BECKLEY_API_SSL_PORT || 9201
+// 	port: process.env.BECKLEY_API_SSL_PORT || 8001
 // 	, key: fs.readFileSync('../keys/server.key').toString()
 // 	, cert: fs.readFileSync('../keys/server.crt').toString()
 // 	, ca: fs.readFileSync('../keys/ca.crt')
