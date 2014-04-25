@@ -229,7 +229,7 @@ function add_resources(index_name, resource_list_name, res) {
 				    logme('error', index_name, logstr);
 			    } else {
 			    	console.log('DONE.');
-			    	logme('success', index_name, 'index-update completed');
+			    	logme('success', index_name, 'added resource list ' + resource_list_name);
 			    }
 			});
 
