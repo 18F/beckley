@@ -70,138 +70,180 @@ app.get('/v0/ping', function(req, res){
 	res.send('pong');
 });
 
-app.get('/v0/index-update/:index_name', function(req, res) {
+// API /v0:
+//
+//	/index/:index_name/reset
+//		deletes and recreates the index
+//
+//	/index/:index_name/update/:resource_name
+//		loads all docs from a single resource into the index
+//
+//	/resources/:index_name/?q=search_term
+//		returns search results from index_name
+
+app.get('/v0/index/:index_name/reset', function(req, res) {
 	// TO DO:
 	// * throttle this call
 	// * security layer?
+	// * should this be a DELETE instead of a GET?
 	index_name = req.params.index_name;
-	rebuild_index(index_name);
-	res.send('Rebuilding index ' + index_name + '; see log.');
+	reset_index(index_name, res);
 });
 
+function reset_index(index_name, res) {
 
-function rebuild_index(index_name) {
+	// For now, just drop the index and re-create it
+
+	// TO DO: Don't delete and re-create; just update the existing index.
+	// Problems to solve: 
+	// (1) how to update existing records without keeping unique ES doc IDs in the resource YAML
+	// (2) deleting -- how do we know what to delete, unless it's indicated in the resource YAML?
+
+	status_code = 200;
+
+	client.indices.delete({
+		index: index_name
+	}, function(err, resp, status) {
+		if (err) {
+			console.error('STATUS = ' + status);
+			console.error('ERROR deleting index: ' + err);
+			logme('warning', index_name, status + ': error deleting index');
+			status_code = 400;
+		} else {
+			logstr = 'DELETED index';
+			console.log(logstr);
+			logme('info', index_name, logstr);
+		}
+
+		// either way, create (or recreate) the index
+		client.indices.create({
+			index: index_name,
+			body: {
+		     "settings": {
+		         "index": {
+		             "analysis": {
+		                 "analyzer": {
+		                     "default": {
+		                         "type": "snowball",
+		                         "language": "English"
+		                     }
+		                 }
+		             }
+		         }
+		     },						
+			}
+		}, function(err, resp, status) {
+			if (err) {
+				logstr = 'ERROR: could not re-create index';
+				console.error(logstr);
+				logme('error', index_name, logstr);
+				status_code = 400;
+			} else {
+				logstr = 'New index (re-)created.';
+				console.log(logstr);
+				logme('info', index_name, logstr);
+			}
+
+			client.indices.putMapping({
+				index: index_name,
+				type: "attachment",
+				body: {
+					"attachment" : {
+						"properties" : {
+							"content" : {
+								"type" : "attachment",
+								"fields" : {
+									"content"  : { "term_vector" : "with_positions_offsets", "store" : "yes" },
+									"title"    : { "store" : "yes", "analyzer" : "english"},
+									"date"     : { "store" : "yes" },
+									"_name"    : { "store" : "yes" },
+									"url" : { "store" : "yes" },
+									"description" : { "store" : "yes" },
+									"tags" : { "store" : "yes" },
+									"_content_type" : { "store" : "yes" }
+								}
+							}
+						}
+					}
+
+				}
+			}, function(err, resp, status) {
+				if (err) {
+					logstr = 'ERROR: could not create attachment mapping';
+					console.error(logstr);
+					logme('error', index_name, logstr);
+					status_code = 400;
+				} else {
+					logstr = 'Attachment mapping created';
+					console.log(logstr);
+					logme('info', index_name, logstr);
+				}
+
+				if (status_code == 400) {
+					res.send(400, 'Could not complete reset for index ' + index_name + '; see log.');
+				} else {
+					res.send(200, 'Index ' + index_name + ' reset.');
+				}
+
+			});
+		});
+	});
+
+}
+
+app.get('/v0/index/:index_name/add/:resource_list_name', function(req, res) {
+	index_name = req.params.index_name;
+	resource_list_name = req.params.resource_list_name;
+	add_resources(index_name, resource_list_name, res);
+});
+
+function add_resources(index_name, resource_list_name, res) {
+
+	status_code = 200;
 
 	// find the resource list corresponding to this index_name
-	resource_url = config.app.resource_origins[index_name];
-	console.log('For index ' + index_name + ', reading from resource url ' + resource_url);
+	resource_list_url = config.app.resource_origins[index_name][resource_list_name];
+	console.log('For index ' + index_name + ', resource list ' + resource_list_name + ', reading from resource list url ' + resource_list_url);
 
-	request(resource_url, function(err, resp, body) {
+	request(resource_list_url, function(err, resp, body) {
 
 		if (!err && resp.statusCode == 200) {
 
 			// Get document, or throw exception on error
 			try {
-			  var resource_list = yaml.safeLoad(resp.body);
-			  // console.log(JSON.stringify(resource_list, null, '  '));
-			  console.log('got resource_list: size = ' + resource_list.length);
+				var resource_list = yaml.safeLoad(resp.body);
+				// console.log(JSON.stringify(resource_list, null, '  '));
+				console.log('got resource_list: size = ' + resource_list.length);
 			} catch (e) {
-			  console.log(e);
+				status_code = 400;
+				console.log(e);
 			}
 
-			// For now, just drop the index and re-create it
-
-			// TO DO: Don't delete and re-create; just update the existing index.
-			// Problems to solve: 
-			// (1) how to update existing records without keeping unique ES doc IDs in the resource YAML
-			// (2) deleting -- how do we know what to delete, unless it's indicated in the resource YAML?
-
-			client.indices.delete({
-				index: index_name
-			}, function(err, resp, status) {
-				if (err) {
-					console.error('STATUS = ' + status);
-					console.error('ERROR deleting index: ' + err);
-					logme('warning', index_name, status + ': error deleting index');
-				} else {
-					logstr = 'DELETED index';
-					console.log(logstr);
-					logme('info', index_name, logstr);
-				}
-
-				// either way, create (or recreate) the index
-				client.indices.create({
-					index: index_name,
-					body: {
-				     "settings": {
-				         "index": {
-				             "analysis": {
-				                 "analyzer": {
-				                     "default": {
-				                         "type": "snowball",
-				                         "language": "English"
-				                     }
-				                 }
-				             }
-				         }
-				     },						
-					}
-				}, function(err, resp, status) {
-					if (err) {
-						logstr = 'ERROR: could not re-create index';
-						console.error(logstr);
-						logme('error', index_name, logstr);
-					} else {
-						logstr = 'New index (re-)created.';
-						console.log(logstr);
-						logme('info', index_name, logstr);
-					}
-
-					client.indices.putMapping({
-						index: index_name,
-						type: "attachment",
-						body: {
-							"attachment" : {
-								"properties" : {
-									"content" : {
-										"type" : "attachment",
-										"fields" : {
-											"content"  : { "term_vector" : "with_positions_offsets", "store" : "yes" },
-											"title"    : { "store" : "yes", "analyzer" : "english"},
-											"date"     : { "store" : "yes" },
-											"_name"    : { "store" : "yes" },
-											"url" : { "store" : "yes" },
-											"description" : { "store" : "yes" },
-											"tags" : { "store" : "yes" },
-											"_content_type" : { "store" : "yes" }
-										}
-									}
-								}
-							}
-
-						}
-					}, function(err, resp, status) {
-						if (err) {
-							logstr = 'ERROR: could not create attachment mapping';
-							console.error(logstr);
-							logme('error', index_name, logstr);
-						} else {
-							logstr = 'Attachment mapping created';
-							console.log(logstr);
-							logme('info', index_name, logstr);
-						}
-
-						// either way, try to load all the resources
-						async.eachLimit(resource_list, 5, index_one_resource, function(err) {
-						    // if any of the saves produced an error, err would equal that error
-						    if (err) {
-						    	logstr = 'ERROR: error while iterating through resources: ' + JSON.stringify(err, null, '  ');
-							    console.log(logstr);
-							    logme('error', index_name, logstr);
-						    } else {
-						    	console.log('DONE.');
-						    	logme('success', index_name, 'index-update completed');
-						    }
-						});
-
-					});
-				});
+			// try to load all the resources from this resource list
+			async.eachLimit(resource_list, 5, index_one_resource, function(err) {
+			    // if any of the saves produced an error, err would equal that error
+			    if (err) {
+			    	status_code = 400;
+			    	logstr = 'ERROR: error while iterating through resources: ' + JSON.stringify(err, null, '  ');
+				    console.log(logstr);
+				    logme('error', index_name, logstr);
+			    } else {
+			    	console.log('DONE.');
+			    	logme('success', index_name, 'index-update completed');
+			    }
 			});
 
 		} else {
-			logstr = 'ERROR: could not load resource list from URL ' + config.app.resource_url;
+			logstr = 'ERROR: could not load resource list from URL ' + resource_list_url;
 			console.error(logstr);
 			logme('error', index_name, logstr);
+			status_code = 400;
+		}
+
+		if (status_code == 400) {
+			res.send(400, 'Error: could not load resource list "' + resource_list_name + '"; see log.');
+		} else {
+			res.send(200, 'Loading resource list "' + resource_list_name + '". See log.');
 		}
 
 	});
@@ -209,6 +251,20 @@ function rebuild_index(index_name) {
 }
 
 function index_one_resource(resource, ior_callback) {
+
+	// move "name" to "title" for consistency in response data
+	if (resource.hasOwnProperty('name') && !resource.hasOwnProperty('title')) {
+		resource.title = resource.name;
+		resource.name.delete;
+	}
+
+	// copy type array to tags array for consistency in response data (expedient for UI)
+	if (resource.hasOwnProperty('type') && !resource.hasOwnProperty('tags')) {
+		resource.tags = resource.type;
+	}
+
+	// add resource list name to the resource (for debugging/analysis)
+	resource.source_list = resource_list_name;
 
 	// download the doc
 	process.nextTick(function() { 
