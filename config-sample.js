@@ -9,7 +9,9 @@ config.app = {};
 config.app.log = './beckley.log';
 
 config.app.resource_origins = {
-	"test" : "https://raw.githubusercontent.com/18F/beckley/master/test/test-resources.yml"
+	"test" : {
+		"resource-1" : "https://raw.githubusercontent.com/18F/beckley/master/test/test-resources.yml"
+	}
 }
 
 config.es = {};

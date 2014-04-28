@@ -8,7 +8,7 @@
 		This sample code assumes that 
 		<ol>
 			<li>you have Beckley running at <code>//localhost:8000</code>, and </li>
-			<li>you have an index called "test" configured in your <code>config.js</code> file. <em>(In <code>config-sample.js</code>, the "test" index is configured to point to the github repo's <a href="https://github.com/18F/beckley/blob/master/test/test-resources.yml">test/test-resources.yml</a> file.)</em></li>
+			<li>you have an index called "test" configured in your <code>config.js</code> file, with a resource called "resource-1". <em>(In <code>config-sample.js</code>, the "test" index has a resource called "resource-1", which is configured to point to the github repo's <a href="https://github.com/18F/beckley/blob/master/test/test-resources.yml">test/test-resources.yml</a> file.)</em></li>
 		</ol>
 	</p>
 
@@ -42,13 +42,18 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script>
 	$(function() {
-		update_url = "//localhost:8000/v0/index-update/test";
+		reset_url = "//localhost:8000/v0/index/test/reset";
+		update_url = "//localhost:8000/v0/index/test/add/resource-1";
 		search_url = "//localhost:8000/v0/resources/test/?q=";
 
 		$('#update').on('click', function() {
-			req = $.get(update_url);
-			req.done(function(resp, textStatus, jqXHR) {
+			reset_req = $.get(reset_url);
+			reset_req.done(function(resp, textStatus, jqXHR) {
 				$('#update-results').html(textStatus + ': ' + resp);
+				update_req = $.get(update_url);
+				update_req.done(function(resp, textStatus, jqXHR) {
+					$('#update-results').html(textStatus + ': ' + resp);
+				});
 			});
 		});
 
