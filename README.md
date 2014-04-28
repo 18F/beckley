@@ -83,3 +83,7 @@ http://localhost:8000/v0/resource/your-index-name/?q=your-search-term&size=200&&
 * from = first result to return (for paging).
 
 At present, queries return unadulterated [Elasticsearch results](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_the_search_api.html).
+
+## Misc
+* The To-Do list is in this repo's Issues. Please contribute bug reports, feature requests, and code!
+* [About James Beckley](http://www.loc.gov/about/about-the-librarian/previous-librarians-of-congress/john-james-beckley/)
