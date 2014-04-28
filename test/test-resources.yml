@@ -1,54 +1,25 @@
 # test-resources.yml
 
-# typical HTML pages
-- url: http://www2.ed.gov/policy/highered/reg/hearulemaking/2012/vawa.html
-  title: "Violence Against Woman Act Negotiated Rulemaking"
-  description: "Negotiated rulemaking sessions"
+# typical URL
+- url: https://18f.gsa.gov/
+  title: "18F - Digital Service Delivery for the Federal Government"
+  description: "18F builds effective, user-centric digital services focused on the interaction between government and the people and businesses it serves."
   tags:
-  - "Clery"
-  - "Title IX"
+  - "delivery"
+  - "agile"
+  - "GSA"
+  - "Presidential Innovation Fellows"
+  email: 18f@gsa.gov
 
-- url: http://www.ed.gov/news/press-releases/us-department-education-reaches-agreement-state-university-new-york-address-and-
-  title: "Title IX: State University of New York (SUNY) Press Release"
-  description: "Press release: U.S. Department of Education Reaches Agreement with the State University of New York to Address and Prevent Sexual Assault and Harassment of Students"
+# an online PDF document  
+- url: http://interactive.snm.org/docs/jnm30551_online.pdf
+  title: "Procedure Guideline for Tumor Imaging with 18F-FDG PET/CT 1.0*"
+  description: "Guidelines to assist physicians in recommending, performing, interpreting, and reporting the results of 18F-FDG PET/CT for oncologic imaging of adult and pediatric patients."
   tags: 
-  - "Ed"
-  - "SUNY"
-  - "press release"
-
-# PDF document
-- url: http://www.bia.gov/cs/groups/xraca/documents/text/idc-022708.pdf
-  title: "Bureau of Indian Education Addressing and Responding to Sexual Violence and Abuse at BIE Post-Secondary Institutions"
-  description: "The policy provides guidance to Bureau operated post secondary institutions to assist with responding in a timely manner to sexual violence and abuse, which includes sexual assault, stalking dating and domestic violence."
-  tags: 
-  - "sexual violence"
-  - "Bureau of Indian Education"
-
-# page that sometimes fails to load
-- url: https://prep.rti.org/ARAtoolkit/index.html
-  title: "The Adolescent Relationship Toolkit"
-  description: "The Adolescent Relationship Toolkit provides FYSB's Adolescent Pregnancy Prevention (APP) grantees with guidance on how to incorporate adolescent relationship abuse (ARA) prevention into their existing APP programming. This toolkit provides practical tools for grantees to choose from and adapt to best fit their projects and participants .  There are also links to available resources."
-
-# special case for this URL with hashes -- only index the hash <div>, not the entire page each time
-- url: http://studentaid.ed.gov/about/data-center/school/clery-act#ashford
-  title: "Clery Act Report: Ashford University"
-  description: ""
-
-- url: http://studentaid.ed.gov/about/data-center/school/clery-act#calstate
-  title: "Clery Act Report: California State University"
-  description: ""
-
-- url: http://studentaid.ed.gov/about/data-center/school/clery-act#clemson
-  title: "Clery Act Report: Clemson University"
-  description: ""
-
-- url: http://studentaid.ed.gov/about/data-center/school/clery-act#cnj
-  title: "Clery Act Report: The College of New Jersey"
-  description: ""
-
-- url: http://studentaid.ed.gov/about/data-center/school/clery-act#dsu
-  title: "Clery Act Report: Delaware State University"
-  description: ""
-
+  - "18F"
+  authors: 
+  - "Dominique Delbeke"
+  - "R. Edward Coleman"
+  - "Milton J. Guiberteau"
 
 # [end of file]
