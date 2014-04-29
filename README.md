@@ -38,8 +38,8 @@ The resource files can reside at any reachable URL -- e.g., they can be in a Git
 * Install dependencies: `npm install`
 * Start the app: `node app`
 
-### Install and try out a sample search page
-* Follow the instructions below to create a new index.
+### Install and try out the sample search page
+* Follow the instructions under "Usage" below to create a new index.
 * Also per the instructions below, either add the built-in test resource file to the index (see `config-sample.js`), or create your own resource file and configure `config.js` to use it.
 * Check the log (by default, `./beckley.log`; also configurable in `config.js`) to make sure everything worked.
 * Copy the sample search page from `/sample` into any directory where you can serve a web page.
