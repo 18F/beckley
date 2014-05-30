@@ -31,12 +31,12 @@ The resource files can reside at any reachable URL -- e.g., they can be in a Git
 ### Install the Beckley server
 * [Download and unizp Elasticsearch](http://www.elasticsearch.org/overview/elkdownloads/), but don't start the server yet.
 * Add the [Mapper Attachments plugin](https://github.com/elasticsearch/elasticsearch-mapper-attachments): `bin/plugin -install elasticsearch/elasticsearch-mapper-attachments/2.0.0`
-* Start the Elasticsearch server: `bin/elasticsearch`
+* Start the Elasticsearch server: `bin/es-start`
 * [Install nodejs](http://nodejs.org/download/).
 * Grab this repo and `cd` into it.
 * Copy `config-sample.js` to `config.js` and edit to taste.
 * Install dependencies: `npm install`
-* Start the app: `node app`
+* Start the app: `forever start app.js -w -o forever-beckley.log -e forever-beckley.err`
 
 ### Install and try out the sample search page
 * Follow the instructions under "Usage" below to create a new index.
