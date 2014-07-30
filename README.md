@@ -52,7 +52,7 @@ To create or reset an index:
 http://localhost:8000/v0/index/your-index-name/reset
 ```
 
-To add resources to an index: 
+To add resources to an index:
 ```
 http://localhost:8000/v0/index/your-index-name/add/resource-name
 ```
@@ -87,3 +87,11 @@ At present, queries return unadulterated [Elasticsearch results](http://www.elas
 ## Misc
 * The To-Do list is in this repo's Issues. Please contribute bug reports, feature requests, and code!
 * [About James Beckley](http://www.loc.gov/about/about-the-librarian/previous-librarians-of-congress/john-james-beckley/)
+
+### Public domain
+
+This project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):
+
+> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+>
+> All contributions to this project will be relatedsed under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
