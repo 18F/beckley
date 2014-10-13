@@ -76,7 +76,7 @@ In production, you'll want to restrict access to the `/index/reset` and `/index/
 ### Running a Query
 To query an index:
 ```
-http://localhost:8000/v0/resource/your-index-name/?q=your-search-term&size=200&&from=0
+http://localhost:8000/v0/resource/your-index-name/?q=your-search-term&size=200&from=0
 ```
 * q = search terms. Supports [Lucene search syntax](http://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
 * size = number of results to return.
