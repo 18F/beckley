@@ -1,0 +1,6 @@
+---
+applications:
+- name: beckley-example
+  memory: 512M
+  services:
+   - beckley-example-es

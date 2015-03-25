@@ -36,7 +36,9 @@ if (config.app.require_http_basic_auth) {
 // 
 // TO DO: 
 // * configure server and port via config.es (default here = localhost:9200)
-var client = new elasticsearch.Client();
+var client = new elasticsearch.Client({
+	host: config.es.host,
+});
 
 // Allow cross-site queries (CORS)
 app.get('*', function(req, res, next) {
