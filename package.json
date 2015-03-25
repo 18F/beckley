@@ -1,18 +1,18 @@
 {
   "name": "beckley",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "node app.js",
-		"preinstall": "npm list jsontool -g || npm install -g jsontool"
+		"preinstall": "npm list json -g || npm install -g json"
   },
   "dependencies": {
+    "cfenv": "*",
     "express": "3.3.4",
     "elasticsearch": "*",
     "async": "*",
-		"request": "*",
-		"url": "*",
-		"http-auth": "*",
+    "request": "*",
+    "http-auth": "*",
     "js-yaml": "*",
     "string": "*",
     "sugar": "*",
