@@ -4,6 +4,11 @@
 
 var config = {};
 
+// Use cfenv to parse the Cloud Foundry service config.
+var cfenv = require("cfenv");
+var appEnv = cfenv.getAppEnv();
+uri = appEnv.getServiceURL("beckley-example-es");
+
 config.app = {};
 
 config.app.log = './beckley.log';
@@ -15,7 +20,8 @@ config.app.resource_origins = {
 }
 
 config.es = {};
-config.es.base_url = 'http://localhost:9200/_search';
+config.es.host = uri
+config.es.base_url = uri + "_search";
 
 // require basic authentication
 config.app.require_http_basic_auth = false;
@@ -27,7 +33,7 @@ config.app.require_http_basic_auth = false;
 
 // http
 config.app.listen_http = true;
-config.app.port = process.env.BECKLEY_API_PORT || 8000;
+config.app.port = appEnv.port || 8000;
 
 // https
 config.app.listen_https = false;
