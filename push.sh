@@ -1,5 +1,8 @@
-# Re-recreate the ES service.
+# Create the ES service.
 cf create-service elasticsearch free beckley-example-es
 
-# Recreate the test loader, api and service binding.
+# Prepare the config.
+cp config-sample.js config.js
+
+# Push.
 cf push beckley-example
