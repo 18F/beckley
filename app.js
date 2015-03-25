@@ -451,17 +451,12 @@ if (! loader) {
 		https.createServer(config.ssl, app).listen(config.ssl.port);
 	}
 
-	console.log("Trying to load...")
-	// Load all default resources.
-	
-	var urls = [];
-
-	var default_origins = config.app.resource_origins;
-
 	// Start load timer.
 	console.time('resource_load');
 
 	// Load all default resources from config.js.
+	var default_origins = config.app.resource_origins;
+	
 	async.forEach(Object.keys(default_origins), function(index, callback) {
 		var new_index_name = index;
 		var new_index_resource = default_origins[index];
