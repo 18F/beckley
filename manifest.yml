@@ -1,0 +1,13 @@
+---
+applications:
+- name: beckley-loader
+  no-route: true
+  memory: 512M
+  env:
+    BECKLEY_LOADER: true
+  services:
+   - beckley-es
+- name: beckley
+  memory: 512M
+  services:
+   - beckley-es
