@@ -1,0 +1,14 @@
+---
+applications:
+- name: beckley-loader
+  domain: 18f.gov
+  memory: 2G
+  env:
+    BECKLEY_LOADER: true
+  services:
+   - beckley-es
+- name: beckley
+  domain: 18f.gov
+  memory: 512M
+  services:
+   - beckley-es
