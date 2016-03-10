@@ -3,6 +3,7 @@ applications:
 - name: beckley-loader
   domain: 18f.gov
   memory: 2G
+  instances: 2
   env:
     BECKLEY_LOADER: true
   services:
@@ -10,5 +11,6 @@ applications:
 - name: beckley
   domain: 18f.gov
   memory: 512M
+  instances: 2
   services:
    - beckley-es
