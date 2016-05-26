@@ -84,6 +84,39 @@ http://localhost:8000/v0/resource/your-index-name/?q=your-search-term&size=200&f
 
 At present, queries return unadulterated [Elasticsearch results](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_the_search_api.html).
 
+## 18F and cloud.gov usage
+The following information is derived after experiencing a failure; it may not
+be entirely accurate, but should be enough to get the job done.
+
+### Warning
+It may be the case that Beckley's config is _only_ available on cloud.gov.
+This means that we should only be `restaging`, never pushing new code. To get
+the current content of this file, use:
+
+```sh
+cf files beckley app/config.js
+```
+
+### Re-indexing
+
+This app's functionality is split across two sets of routes (main.js and
+loader.js). The latter defines routes associated with re-indexing and hence
+should not be accessible to the public. As such, Beckley is split over two
+cloud.gov apps, `beckley` and `beckley-loader`. The second has an extra
+environment variable which triggers access to the "loader" routes but the app
+is not mapped to a route (i.e. it cannot be accessed). To re-index, you will
+want to map a route to the loader app, hit the appropriate url, and then
+unmap:
+
+```sh
+cf map-route beckley-loader 18f.gov -n beckley-loader
+curl https://beckley-loader.18f.gov/v0/add-all
+cf delete-route 18f.gov -n beckley-loader
+```
+
+You may need to re-index if the recreating the Elastic Search instance (which
+has become unresponsive in the past.)
+
 ## Misc
 * The To-Do list is in this repo's Issues. Please contribute bug reports, feature requests, and code!
 * [About James Beckley](http://www.loc.gov/about/about-the-librarian/previous-librarians-of-congress/john-james-beckley/)
