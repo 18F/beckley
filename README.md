@@ -114,8 +114,8 @@ curl https://beckley-loader.18f.gov/v0/add-all
 cf delete-route 18f.gov -n beckley-loader
 ```
 
-You may need to re-index if the recreating the Elastic Search instance (which
-has become unresponsive in the past.)
+You may need to re-index if recreating the Elastic Search instance (which has
+become unresponsive in the past.)
 
 ## Misc
 * The To-Do list is in this repo's Issues. Please contribute bug reports, feature requests, and code!
